@@ -4,7 +4,7 @@ import Login from './components/Login.vue';
 import Profile from './components/Profile.vue';
  export default [
 
-    {path:'/users',component:Userlist},
+    {path:'/users',name:'users',component:Userlist},
     {path:'/',component:Login},
     {path:'/userprofile/:id',component:Profile},
     

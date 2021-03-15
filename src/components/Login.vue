@@ -53,7 +53,8 @@ export default {
              email: this.Email,
              password: this.Password
   }).then(function (response) {
-    window.open("/users")
+    //window.open("/users")
+    this.$router.push({name: 'users'})
   })
   .catch(function (error) {
     console.log(error)
