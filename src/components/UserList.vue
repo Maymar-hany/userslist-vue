@@ -85,7 +85,7 @@ export default {
       
      }
       this.firstPage=false;
-     console.log(this.currentPage)}
+    }
    },
   
   getPreviousData(){

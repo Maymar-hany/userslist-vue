@@ -38,29 +38,22 @@ export default {
   methods:{
     login(){
                if(this.Email != "" && this.Password != "") {
-                /*if(this.Email == this.admin.email && this.Password == this.admin.password) {
-                    
-                    console.log('true')
-                   // this.$router.push('users'),
-                    //this.$parent.logged=false
-                    
-                    
-                } */ this.$http.post('https://reqres.in/api/login', {
+                 this.$http.post('https://reqres.in/api/login', {
              email: this.Email,
              password: this.Password
   }).then(function (response) {
 
      localStorage.setItem('token', response.body.token);
-   
+    
                  if (localStorage.getItem('token') != null){
                             this.$emit('loggedIn')
                             if(this.$route.params.nextUrl != null){
                                 this.$router.push(this.$route.params.nextUrl)
-                                console.log("hello")
+                                
                             }
                             else {
                                     this.$router.push({name:'users'});
-                                    console.log("hi")
+                                    
                                 }
                             }
                         
@@ -82,7 +75,7 @@ export default {
   },
   data(){
       return{
-          admin:[],
+          
           Email:'',
           Password:'',
          token:localStorage.getItem('token'), 
