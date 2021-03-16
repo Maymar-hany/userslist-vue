@@ -32,11 +32,11 @@ is-offset-one-fifth">
                     </tbody>
                   </table>
                   <nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-previous" title="This is the first page" @click="previousPage" :disabled="!lastPage">Previous</a>
+  <a class="pagination-previous" title="This is the first page" @click="getPreviousData" :disabled="!lastPage">Previous</a>
   <a class="pagination-next" @click="updatePage" :disabled="lastPage">Next page</a>
   <ul class="pagination-list">
     <li>
-      <a v-bind:class="['pagination-link', { 'is-current' : firstPage }]" @click="previousPage" aria-label="Page 1" aria-current="page">1</a>
+      <a v-bind:class="['pagination-link', { 'is-current' : firstPage }]" @click="getPreviousData" aria-label="Page 1" aria-current="page">1</a>
     </li>
     <li>
       <a v-bind:class="['pagination-link', { 'is-current' : !firstPage }]" @click="updatePage"  aria-label="Goto page 2">2</a>
@@ -75,40 +75,42 @@ export default {
   },
   methods:{
    updatePage(){
+     
      if(this.lastPage==false){
      this.currentPage+=1;
+     this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
+            this.users = data.body.data;});
       if(this.currentPage==this.TotalPages){
       this.lastPage=true;
       
-      console.log(this.lastPage)}
+     }
       this.firstPage=false;
      console.log(this.currentPage)}
    },
-   previousPage(){
-    if(this.lastPage==true) {
+  
+  getPreviousData(){
+   
+           if(this.lastPage==true) {
      this.currentPage-=1;
+       this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
+            this.users = data.body.data;});
      this.lastPage=false;
      this.firstPage=true}
-  }
+    
+      
+     
+   }
+  
+
+        
   
   },
   created(){
+    this.updatePage();
+    this.getPreviousData();
     
-     this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
-            this.users = data.body.data;
-           
-
-        });
   },
-  updated() {
-  this.$nextTick(function () {
-      this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
-            this.users = data.body.data;
-           
-
-        });
-  })
-}
+  
 }
 </script>
 
