@@ -31,6 +31,19 @@ is-offset-one-fifth">
                       </tr>
                     </tbody>
                   </table>
+                  <nav class="pagination" role="navigation" aria-label="pagination">
+  <a class="pagination-previous" title="This is the first page" @click="previousPage" :disabled="!lastPage">Previous</a>
+  <a class="pagination-next" @click="updatePage" :disabled="lastPage">Next page</a>
+  <ul class="pagination-list">
+    <li>
+      <a v-bind:class="['pagination-link', { 'is-current' : firstPage }]" @click="previousPage" aria-label="Page 1" aria-current="page">1</a>
+    </li>
+    <li>
+      <a v-bind:class="['pagination-link', { 'is-current' : !firstPage }]" @click="updatePage"  aria-label="Goto page 2">2</a>
+    </li>
+    
+  </ul>
+</nav>
                 </div>
               </section>
            
@@ -47,23 +60,55 @@ export default {
     Profile
     
   },
+  props:{
+   
+  },
   data(){
      return{
        users:[],
-       
+       currentPage:1,
+       TotalPages:2,
+       lastPage:false,
+       first:1,
+       firstPage:true
      }
   },
   methods:{
-   
+   updatePage(){
+     if(this.lastPage==false){
+     this.currentPage+=1;
+      if(this.currentPage==this.TotalPages){
+      this.lastPage=true;
+      
+      console.log(this.lastPage)}
+      this.firstPage=false;
+     console.log(this.currentPage)}
+   },
+   previousPage(){
+    if(this.lastPage==true) {
+     this.currentPage-=1;
+     this.lastPage=false;
+     this.firstPage=true}
+  }
+  
   },
   created(){
     
-     this.$http.get('https://reqres.in/api/users?page=1').then(function(data){
+     this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
             this.users = data.body.data;
            
 
         });
-  }
+  },
+  updated() {
+  this.$nextTick(function () {
+      this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
+            this.users = data.body.data;
+           
+
+        });
+  })
+}
 }
 </script>
 
@@ -77,5 +122,17 @@ button{
     text-decoration: none;
     padding: 6px 8px;
     border-radius: 10px;
+}
+li{
+  color: aquamarine;
+}
+.pagination-link.is-current,.pagination-next,.pagination-previous{
+  background:#00D1B2 !important
+}
+a.pagination-link{
+  color: black;
+}
+a.pagination-link.is-current{
+  color: #fff;
 }
 </style>

@@ -34,11 +34,7 @@ export default {
   components: {
     Userlist
   },
-  props:{
-  Email:' ',
-  Password:' ',
-  
-  },
+ 
   methods:{
     login(){
                if(this.Email != "" && this.Password != "") {
@@ -49,12 +45,25 @@ export default {
                     //this.$parent.logged=false
                     
                     
-                } */       this.$http.post('https://reqres.in/api/login', {
+                } */ this.$http.post('https://reqres.in/api/login', {
              email: this.Email,
              password: this.Password
   }).then(function (response) {
-    //window.open("/users")
-    this.$router.push({name: 'users'})
+
+     localStorage.setItem('token', response.body.token);
+   
+                 if (localStorage.getItem('token') != null){
+                            this.$emit('loggedIn')
+                            if(this.$route.params.nextUrl != null){
+                                this.$router.push(this.$route.params.nextUrl)
+                                console.log("hello")
+                            }
+                            else {
+                                    this.$router.push({name:'users'});
+                                    console.log("hi")
+                                }
+                            }
+                        
   })
   .catch(function (error) {
     console.log(error)
@@ -73,9 +82,10 @@ export default {
   },
   data(){
       return{
-          admin:[
-
-          ],
+          admin:[],
+          Email:'',
+          Password:'',
+         token:localStorage.getItem('token'), 
       }
   },
   created(){
