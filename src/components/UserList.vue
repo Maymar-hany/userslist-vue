@@ -5,7 +5,7 @@
               <p class="title">
                 Users
               </p>
-            
+
             </div>
           </section>
             <section class="section">
@@ -21,13 +21,13 @@ is-offset-one-fifth">
                     <tbody>
                       <tr :key="user.id" v-for="user in users">
                         <td >{{user.id}}</td>
-      
+
                         <td>{{user.first_name}} {{user.last_name}}
-                          <button class="button is-primary" 
+                          <button class="button is-primary"
                           >
                           <router-link :to="'/userprofile/'+ user.id"> View profile</router-link></button>
-                      
-                        </td>   
+
+                        </td>
                       </tr>
                     </tbody>
                   </table>
@@ -38,75 +38,62 @@ is-offset-one-fifth">
     <li :key="index" v-for="index of TotalPages">
       <a v-bind:class="['pagination-link', { 'is-current' : index==currentPage }]" @click="getResource(index)" aria-label="Page 1" aria-current="page">{{index}}</a>
     </li>
-    
-    
+
   </ul>
 </nav>
                 </div>
               </section>
-           
+
         </div>
 </template>
 
 <script>
 
-import Profile from './Profile.vue';
 export default {
   name: 'Userlist',
   components: {
-    Profile
-    
-  },
-  props:{
-   
-  },
-  data(){
-     return{
-       users:[],
-       currentPage:1,
-       TotalPages:'',
-       first:1,
-       
-     }
-  },
-  methods:{
-   updatePage(){
-     
-     if(this.currentPage!=this.TotalPages){
-     this.currentPage+=1;
-      this.getResource(this.currentPage);
 
-     }
-   },
-  
-  getPreviousData(){
-   
-    if(this.currentPage!=this.first) {
-     this.currentPage-=1;
-      
-     
+  },
+  props: {
+
+  },
+  data () {
+    return {
+      users: [],
+      currentPage: 1,
+      TotalPages: '',
+      first: 1
+
     }
-     this.getResource(this.currentPage);
-      
-     
-   },
-  
-        getResource(page){
-           this.$http.get('https://reqres.in/api/users?page='+page).then(function(data){
-            this.users = data.body.data;
-            this.TotalPages=data.body.total_pages;
-            this.currentPage=page;
-            });
-        }
-  
   },
-  created(){
-    
-    
-    this.getResource(this.currentPage);
-    
+  methods: {
+    updatePage () {
+      if (this.currentPage !== this.TotalPages) {
+        this.currentPage += 1
+        this.getResource(this.currentPage)
+      }
+    },
+
+    getPreviousData () {
+      if (this.currentPage !== this.first) {
+        this.currentPage -= 1
+      }
+      this.getResource(this.currentPage)
+    },
+
+    getResource (page) {
+      this.$http.get('https://reqres.in/api/users?page=' + page).then(function (data) {
+        this.users = data.body.data
+        this.TotalPages = data.body.total_pages
+        this.currentPage = page
+      })
+    }
+
   },
-  
+  created () {
+    this.getResource(this.currentPage)
+  }
+
 }
 </script>
 
@@ -115,7 +102,7 @@ button{
   float: right;
 }
  a {
-  
+
      color: #fff;
     text-decoration: none;
     padding: 6px 8px;
