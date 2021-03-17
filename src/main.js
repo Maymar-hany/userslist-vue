@@ -3,8 +3,11 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import Routes from './routes'
 import VueResource from 'vue-resource'
-import JwPagination from 'jw-vue-pagination';
-Vue.component('jw-pagination', JwPagination);
+
+import '../node_modules/bulma/css/bulma.css';
+
+
+
 Vue.use(VueResource);
 Vue.config.productionTip = false
 Vue.use(VueRouter);

@@ -95,7 +95,7 @@ is-offset-one-quarter">
 </template>
 
 <script>
-import '../../node_modules/bulma/css/bulma.css';
+
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {faPhone} from '@fortawesome/free-solid-svg-icons'
 import { faHome } from '@fortawesome/free-solid-svg-icons'

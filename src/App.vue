@@ -7,16 +7,12 @@
 </template>
 
 <script>
-import Login from './components/Login'
-import Userlist from './components/UserList'
-import Profile from './components/Profile.vue';
+
 
 export default {
   name: 'App',
   components: {
-    Login,
-    Userlist,
-    Profile
+   
   },
   data(){
     return{

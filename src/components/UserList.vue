@@ -32,15 +32,13 @@ is-offset-one-fifth">
                     </tbody>
                   </table>
                   <nav class="pagination" role="navigation" aria-label="pagination">
-  <a class="pagination-previous" title="This is the first page" @click="getPreviousData" :disabled="!lastPage">Previous</a>
-  <a class="pagination-next" @click="updatePage" :disabled="lastPage">Next page</a>
+  <a class="pagination-previous" title="This is the first page" @click="getPreviousData" :disabled="currentPage==first">Previous</a>
+  <a class="pagination-next" @click="updatePage" :disabled="currentPage==TotalPages">Next page</a>
   <ul class="pagination-list">
-    <li>
-      <a v-bind:class="['pagination-link', { 'is-current' : firstPage }]" @click="getPreviousData" aria-label="Page 1" aria-current="page">1</a>
+    <li :key="index" v-for="index of TotalPages">
+      <a v-bind:class="['pagination-link', { 'is-current' : index==currentPage }]" @click="getResource(index)" aria-label="Page 1" aria-current="page">{{index}}</a>
     </li>
-    <li>
-      <a v-bind:class="['pagination-link', { 'is-current' : !firstPage }]" @click="updatePage"  aria-label="Goto page 2">2</a>
-    </li>
+    
     
   </ul>
 </nav>
@@ -52,7 +50,6 @@ is-offset-one-fifth">
 
 <script>
 
-import '../../node_modules/bulma/css/bulma.css';
 import Profile from './Profile.vue';
 export default {
   name: 'Userlist',
@@ -67,47 +64,46 @@ export default {
      return{
        users:[],
        currentPage:1,
-       TotalPages:2,
-       lastPage:false,
+       TotalPages:'',
        first:1,
-       firstPage:true
+       
      }
   },
   methods:{
    updatePage(){
      
-     if(this.lastPage==false){
+     if(this.currentPage!=this.TotalPages){
      this.currentPage+=1;
-     this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
-            this.users = data.body.data;});
-      if(this.currentPage==this.TotalPages){
-      this.lastPage=true;
-      
+      this.getResource(this.currentPage);
+
      }
-      this.firstPage=false;
-    }
    },
   
   getPreviousData(){
    
-           if(this.lastPage==true) {
+    if(this.currentPage!=this.first) {
      this.currentPage-=1;
-       this.$http.get('https://reqres.in/api/users?page='+this.currentPage).then(function(data){
-            this.users = data.body.data;});
-     this.lastPage=false;
-     this.firstPage=true}
-    
       
      
-   }
+    }
+     this.getResource(this.currentPage);
+      
+     
+   },
   
-
-        
+        getResource(page){
+           this.$http.get('https://reqres.in/api/users?page='+page).then(function(data){
+            this.users = data.body.data;
+            this.TotalPages=data.body.total_pages;
+            this.currentPage=page;
+            });
+        }
   
   },
   created(){
-    this.updatePage();
-    this.getPreviousData();
+    
+    
+    this.getResource(this.currentPage);
     
   },
   

@@ -27,12 +27,12 @@ is-offset-one-quarter">
 </template>
 
 <script>
-import '../../node_modules/bulma/css/bulma.css';
-import Userlist from './UserList.vue'
+
+
 export default {
   name: 'Login',
   components: {
-    Userlist
+    
   },
  
   methods:{
@@ -79,6 +79,7 @@ export default {
           Email:'',
           Password:'',
          token:localStorage.getItem('token'), 
+
       }
   },
   created(){
