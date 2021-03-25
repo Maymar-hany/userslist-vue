@@ -7,8 +7,7 @@ is-offset-one-quarter">
                 <div class="container">
                  <div class="card">
 
-                  <div class="column is-offset-one-quarter
-">
+                  <div class="column is-offset-one-quarter">
                     <div class="card-image">
 
                   <figure class="image is-128x128">
@@ -19,7 +18,7 @@ is-offset-one-quarter">
                     <div>
                       <p class="title is-4">{{user.first_name}} {{user.last_name}} </p>
                     </div>
-                   <!--    <p class="subtitle is-6">@{{user.username}}</p> -->
+
                      <div>
                       <span class="icon-text">
                         <span class="icon">
@@ -52,19 +51,27 @@ export default {
       addressIcon: faHome,
       email: faEnvelope,
       web: faGlobe,
-      id: this.$route.params.id,
-      user: {}
+      Id: this.$route.params.id
 
     }
   },
+  props: {
+
+  },
   created () {
-    this.$http.get('https://reqres.in/api/users/' + this.id).then(function (data) {
-      this.user = data.body.data
-    })
+
   },
 
   components: {
     FontAwesomeIcon
+  },
+  methods: {
+
+  },
+  computed: {
+    user () {
+      return this.$store.getters.userData
+    }
   }
 
 }

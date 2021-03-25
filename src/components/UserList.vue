@@ -10,7 +10,7 @@
           </section>
             <section class="section">
                 <div class="column is-half
-is-offset-one-fifth">
+                      is-offset-one-fifth">
                   <table class="table is-bordered is-striped is-narrow is-fullwidth">
                     <thead>
                       <tr>
@@ -23,10 +23,12 @@ is-offset-one-fifth">
                         <td >{{user.id}}</td>
 
                         <td>{{user.first_name}} {{user.last_name}}
-                          <button class="button is-primary"
-                          >
-                          <router-link :to="'/userprofile/'+ user.id"> View profile</router-link></button>
 
+                           <Delete :id="user.id" />
+                           <Edit :id="user.id" />
+
+                            <button class="button is-primary" @click="viewProfile(user.id)" >
+                          <router-link :to="'/userprofile/'+ user.id"> View profile</router-link></button>
                         </td>
                       </tr>
                     </tbody>
@@ -48,10 +50,14 @@ is-offset-one-fifth">
 </template>
 
 <script>
+import Edit from './editUser'
+import Delete from './deleteUser'
 
 export default {
   name: 'Userlist',
   components: {
+    Edit,
+    Delete
 
   },
   props: {
@@ -59,7 +65,7 @@ export default {
   },
   data () {
     return {
-      users: [],
+
       currentPage: 1,
       TotalPages: '',
       first: 1
@@ -82,16 +88,25 @@ export default {
     },
 
     getResource (page) {
-      this.$http.get('https://reqres.in/api/users?page=' + page).then(function (data) {
-        this.users = data.body.data
-        this.TotalPages = data.body.total_pages
-        this.currentPage = page
-      })
+      this.TotalPages = this.$store.state.total
+
+      this.$store.commit('Current_Page', page)
+      this.$store.dispatch('loadUsers', this.$store.getters.getPage)
+      this.currentPage = page
+    },
+    viewProfile (userid) {
+      this.$store.dispatch('getUser', userid)
     }
 
   },
   created () {
-    this.getResource(this.currentPage)
+  },
+
+  computed: {
+
+    users () {
+      return this.$store.getters.getUsers
+    }
   }
 
 }
@@ -100,6 +115,7 @@ export default {
 <style scoped>
 button{
   float: right;
+   margin: 5px
 }
  a {
 

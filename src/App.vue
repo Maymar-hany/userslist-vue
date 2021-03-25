@@ -19,6 +19,14 @@ export default {
   },
   props: {
 
+  },
+  created () {
+    this.$store.dispatch('loadUsers', this.$store.getters.getPage)
+  },
+  computed: {
+    page () {
+      return this.$store.getters.getPage
+    }
   }
 }
 </script>
